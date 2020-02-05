@@ -17,12 +17,10 @@ using namespace std;
 
 Operator::Operator(string filename){
   file = filename;
-  fileInputInt = "\0";
+  srtInput = "\0";
+  intInput = "\0";
   playerName = "\0";
-  int playerGoalRecord = 0;
-  hashTableLength = 5;
-
-  hashTable = &hashTable[hashTableLength];
+  playerGoalRecord = 0;
 }
 
 void Operator::printCommands() {
@@ -39,7 +37,7 @@ void Operator::printCommands() {
 void Operator::insertPlayer() {
   cout << "\nPreparing to Insert a Player...\n";
 
-  int index = 0;
+  //int index = 0;
 
   //myList.insert(1, value);
 }
@@ -48,7 +46,12 @@ void Operator::run() {
   cout << "\nWelcome to the Interactive Hash Table Program!\n\n";
   int value = 0;
   ifstream inFile;
-  Player* newPlayer;
+  Player* newPlayer = nullptr;
+  hashTableLength = 5;
+
+  LinkedList<Player> hashTable[hashTableLength];
+
+  //hashTable = LinkedList<Player*>[hashTableLength] table ;
 
   //Open File.
   inFile.open(file);
@@ -57,21 +60,26 @@ void Operator::run() {
     cout << "File name not valid!\n";
   } else {
     while (!inFile.eof( )) {
-      inFile >> playerName >> fileInputInt;
-      cout << playerName << "  " << fileInputInt;
+      inFile >> srtInput >> intInput;
 
       string strParser = "\0";
 
-      for (int i = 0; i < fileInputInt.length(); i++) {
-        if(fileInputInt.at(i) == '0' || fileInputInt.at(i) == '1' || fileInputInt.at(i) == '2' || fileInputInt.at(i) == '3' || fileInputInt.at(i) == '4'
-        || fileInputInt.at(i) == '5' || fileInputInt.at(i) == '6' || fileInputInt.at(i) == '7' || fileInputInt.at(i) == '8' || fileInputInt.at(i) == '9')
-        {
-          strParser = strParser + fileInputInt.at(i);
-        }
+      for (int i = 0; i < srtInput.length(); i++) {
+        if(srtInput.at(i) != ':')
+        strParser = strParser + srtInput.at(i);
+      }
+
+      playerName = strParser;
+      strParser = "\0";
+
+      for (int i = 0; i < intInput.length(); i++) {
+        if(intInput.at(i) == '0' || intInput.at(i) == '1' || intInput.at(i) == '2' || intInput.at(i) == '3' || intInput.at(i) == '4'
+        || intInput.at(i) == '5' || intInput.at(i) == '6' || intInput.at(i) == '7' || intInput.at(i) == '8' || intInput.at(i) == '9')
+          strParser = strParser + intInput.at(i);
       }
 
       playerGoalRecord = stoi(strParser);
-      cout << "\n" << playerGoalRecord << "\n\n";
+      strParser = "\0";
 
       if(inFile.fail()) {
         inFile.clear();
@@ -79,21 +87,22 @@ void Operator::run() {
       } else {
         int index = 0;
         index = playerGoalRecord % hashTableLength;
-        cout << index << "\n\n";
 
-        //newPlayer = new
+        newPlayer = new Player();
 
-        hashTable[index].insert(hashTable[index].getLength() + 1, Player(playerName, playerGoalRecord));
+        newPlayer->setName(playerName);
+        newPlayer->setGoalRecord(playerGoalRecord);
+
+        hashTable[index].insert(1, Player(playerName, playerGoalRecord));
 
         newPlayer = nullptr;
-        delete newPlayer;
       }
     }
   }
 
   // Close File.
   inFile.close();
-  /*
+
   do {
     printCommands();
     cin >> option;
@@ -113,6 +122,7 @@ void Operator::run() {
         if (option == 1) {
           cout << "\nPreparing to Insert a New Element...\n";
 
+          /*
           int value;
           cout << "\nChoose a number to be inserted:\n\n> ";
           cin >> value;
@@ -136,9 +146,11 @@ void Operator::run() {
               break;
             }
           }
+          */
         }
         // 2. RemovePlayer
         else if (option == 2) {
+          /*
           if (myList.getLength() > 0) {
             cout << "\nPreparing to Delete a Listed Element...\n";
 
@@ -182,29 +194,34 @@ void Operator::run() {
           } else {
             cout << "\nERROR! List is Empty.\n\n";
           }
+          */
         }
-        // 3. PrintPlayersList
+        // 3. PrintPlayersList - Complete!
         else if (option == 3) {
-          cout << "\nPrinting List of Elements...\n";
+          cout << "\nPrinting List of Players...\n\n";
 
-          try {
-            if (myList.getLength() > 0) {
-              cout << "List: ";
-              for (int i = 1; i <= myList.getLength(); i++) {
-                cout << myList.getEntry(i) << " ";
+          for(int i = 0; i < hashTableLength; i++)
+          {
+            cout << i << ":";
+            try {
+              if (hashTable[i].getLength() > 0) {
+                for (int j = 1; j <= hashTable[i].getLength(); j++) {
+                  cout << " -> ";
+                  cout << hashTable[i].getEntry(j).getName() << " " << hashTable[i].getEntry(j).getGoalRecord();
+                }
               }
-              cout << "\n\n";
-            } else {
-              cout << "\nCannot print list.\nList is Empty.\n\n";
+            } catch (runtime_error) {
+              cout << "\nERROR! Invalid Position!\n\n";
             }
-          } catch (runtime_error) {
-            cout << "\nERROR! Invalid Position!\n\n";
+            cout << "\n";
           }
+          cout << "\n";
         }
         // 4. PlayerWithGoalCountEqualTo(g)
         else if (option == 4) {
           cout << "\nPrinting List of Elements...\n";
 
+          /*
           try {
             if (myList.getLength() > 0) {
               cout << "List: ";
@@ -218,11 +235,13 @@ void Operator::run() {
           } catch (runtime_error) {
             cout << "\nERROR! Invalid Position!\n\n";
           }
+          */
         }
         // 5. PlayerWithNumGoalsGreaterThan(h)
         else if (option == 5) {
           cout << "\nPrinting List of Elements...\n";
 
+          /*
           try {
             if (myList.getLength() > 0) {
               cout << "List: ";
@@ -236,11 +255,13 @@ void Operator::run() {
           } catch (runtime_error) {
             cout << "\nERROR! Invalid Position!\n\n";
           }
+          */
         }
         // 6. PlayerWithNumGoalsLessThan(i)
         else if (option == 6) {
           cout << "\nPrinting List of Elements...\n";
 
+          /*
           try {
             if (myList.getLength() > 0) {
               cout << "List: ";
@@ -254,6 +275,7 @@ void Operator::run() {
           } catch (runtime_error) {
             cout << "\nERROR! Invalid Position!\n\n";
           }
+          */
         }
         // 7. Exit - Complete!
         else if (option == 7) {
@@ -268,7 +290,6 @@ void Operator::run() {
       }
     }
   } while(option != 7);
-  */
   //hashTable.clear();
 
   value = 0;

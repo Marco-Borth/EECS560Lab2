@@ -22,11 +22,11 @@ class Operator
 private:
   int option;
   int hashTableLength;
-  LinkedList<Player>* hashTable;
   string file;
-  string fileInputInt;
   string playerName;
   int playerGoalRecord;
+  string srtInput;
+  string intInput;
 
 public:
 /**
