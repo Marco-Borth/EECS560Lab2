@@ -35,9 +35,11 @@ public:
 */
 	void run();
 
+/**
+* @pre none.
+* @post prints list of commands to display for the user.
+*/
   void printCommands();
-
-  void insertPlayer();
 
 /*
 * @pre filename is a string.
