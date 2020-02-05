@@ -100,27 +100,80 @@ void Operator::run() {
       }
       // Operation Number has been selected.
       else {
-        // 1. AddPlayer
+        // 1. AddPlayer - Complete, but prone to input errors!
         if (option == 1) {
-          cout << "\nPreparing to Insert a New Element...\n";
+          cout << "\nPreparing to Insert a New Record...\n";
 
-          /*
-          int value;
-          cout << "\nChoose a number to be inserted:\n\n> ";
-          cin >> value;
+          cout << "\nEnter the record to be inserted:\n\n> ";
+          cin >> srtInput;
+
+          string strParser = "\0";
+
+          for (int i = 0; i < srtInput.length(); i++) {
+            if(srtInput.at(i) != ':')
+            strParser = strParser + srtInput.at(i);
+          }
+
+          playerName = strParser;
+          strParser = "\0";
+
+          cin >> intInput;
 
           while(1) {
             if(cin.fail()) {
               cin.clear();
               cin.ignore(numeric_limits<streamsize>::max(),'\n');
               cout << "\n\nERROR! Invalid entry!\n\n";
-              cout << "\nChoose a number to be inserted:\n\n> ";
-              cin >> value;
+              cout << "\nEnter the record to be inserted:\n\n> ";
+              cin >> srtInput;
+
+              string strParser = "\0";
+
+              for (int i = 0; i < srtInput.length(); i++) {
+                if(srtInput.at(i) != ':')
+                strParser = strParser + srtInput.at(i);
+              }
+
+              playerName = strParser;
+              strParser = "\0";
+
+              cin >> intInput;
             } else {
+
+              for (int i = 0; i < intInput.length(); i++) {
+                if(intInput.at(i) == '0' || intInput.at(i) == '1' || intInput.at(i) == '2' || intInput.at(i) == '3' || intInput.at(i) == '4'
+                || intInput.at(i) == '5' || intInput.at(i) == '6' || intInput.at(i) == '7' || intInput.at(i) == '8' || intInput.at(i) == '9')
+                  strParser = strParser + intInput.at(i);
+              }
+
+              playerGoalRecord = stoi(strParser);
+              strParser = "\0";
+
               try {
-                cout << "\nInserting " << value << " at the front of the list...\n";
-                //myList.insert(1, value);
-                cout << value << " is inserted.\n\n";
+                cout << "\nInserting " << playerName << " into the records...\n";
+
+                bool isFound = false;
+
+                for(int i = 0; i < hashTableLength; i++) {
+                  if (hashTable[i].getLength() > 0) {
+                    for (int j = 1; j <= hashTable[i].getLength(); j++) {
+                      if (hashTable[i].getEntry(j).getName() == playerName && hashTable[i].getEntry(j).getGoalRecord() == playerGoalRecord) {
+                        isFound = true;
+                      }
+                    }
+                  }
+                }
+
+                if(isFound)
+                  cout << "ERROR! Duplicate Entry Found. Player Record was not successfully inserted.\n\n";
+                else {
+                  int index = 0;
+                  index = playerGoalRecord % hashTableLength;
+
+                  hashTable[index].insert(hashTable[index].getLength() + 1, Player(playerName, playerGoalRecord));
+
+                  cout << "Player Record was successfully inserted.\n\n";
+                }
               } catch (runtime_error) {
                 cout << "\nERROR! Invalid Position!\n\n";
               }
@@ -128,55 +181,56 @@ void Operator::run() {
               break;
             }
           }
-          */
         }
-        // 2. RemovePlayer
+        // 2. RemovePlayer - Complete!
         else if (option == 2) {
-          /*
-          if (myList.getLength() > 0) {
-            cout << "\nPreparing to Delete a Listed Element...\n";
+          cout << "\nPreparing to Delete a Record...\n";
 
-            int value;
-            cout << "\nChoose a number to be deleted from the list:\n\n> ";
-            cin >> value;
+          int value;
+          cout << "\nEnter a record with required goals to be removed:\n\n> ";
+          cin >> value;
 
-            while(1) {
-              if(cin.fail()) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(),'\n');
-                cout << "\n\nERROR! Invalid entry!\n\n";
-                cout << "\nChoose a number to be deleted from the list:\n\n> ";
-                cin >> value;
-              } else {
-                try {
-                  cout << "\nDeleting " << value << " from this list...\n\n";
-                  int position = 1;
+          while(1) {
+            if(cin.fail()) {
+              cin.clear();
+              cin.ignore(numeric_limits<streamsize>::max(),'\n');
+              cout << "\n\nERROR! Invalid entry!\n\n";
+              cout << "\nEnter a record with required goals to be removed:\n\n> ";
+              cin >> value;
+            } else {
+              try {
+                cout << "\nDeleting any player found with " << value << " goals recorded from this list...\n\n";
 
-                  bool isFound = false;
-                  while (position <= myList.getLength()) {
-                    if (myList.getEntry(position) == value) {
-                      myList.remove(position);
-                      isFound = true;
-                      break;
+                bool isFound = false;
+                int index = 0;
+                int position = 0;
+
+                for(int i = 0; i < hashTableLength; i++) {
+                  if (hashTable[i].getLength() > 0) {
+                    for (int j = 1; j <= hashTable[i].getLength(); j++) {
+                      if (hashTable[i].getEntry(j).getGoalRecord() == value) {
+                        index = i;
+                        position = j;
+                        isFound = true;
+                      }
                     }
-                    position++;
                   }
-
-                  if(!isFound)
-                    cout << value << " is NOT found in the list.\n\n";
-                  else
-                    cout << "The last occurrence of " << value << " has been deleted from the list.\n\n";
-                } catch (runtime_error) {
-                  cout << "\nERROR! Invalid Position!\n\n";
                 }
 
-                break;
+                if(!isFound)
+                  cout << "ERROR! No Record Found.\n\n";
+                else {
+                  hashTable[index].remove(position);
+
+                  cout << "Player Record was successfully inserted.\n\n";
+                }
+              } catch (runtime_error) {
+                cout << "\nERROR! Invalid Position!\n\n";
               }
+
+              break;
             }
-          } else {
-            cout << "\nERROR! List is Empty.\n\n";
           }
-          */
         }
         // 3. PrintPlayersList - Complete!
         else if (option == 3) {
@@ -230,7 +284,7 @@ void Operator::run() {
                 }
               }
               if(!isFound)
-                cout << "There is no player with "<< value << " goals recorded.";
+                cout << "There is no player with "<< value << " goals found.";
               cout << "\n\n";
 
               break;
@@ -239,7 +293,7 @@ void Operator::run() {
         }
         // 5. PlayerWithNumGoalsGreaterThan(h) - Complete!
         else if (option == 5) {
-          cout << "\nPrinting List of Players with a higher goal count...\n";
+          cout << "\nPrinting List of Players with same goal count or higher...\n";
 
           cout << "\nEnter the goal count:\n\n> ";
           cin >> value;
@@ -258,7 +312,7 @@ void Operator::run() {
                 try {
                   if (hashTable[i].getLength() > 0) {
                     for (int j = 1; j <= hashTable[i].getLength(); j++) {
-                      if (hashTable[i].getEntry(j).getGoalRecord() > value) {
+                      if (hashTable[i].getEntry(j).getGoalRecord() >= value) {
                         cout << hashTable[i].getEntry(j).getName() << ", ";
                         isFound = true;
                       }
@@ -269,7 +323,7 @@ void Operator::run() {
                 }
               }
               if(!isFound)
-                cout << "There is no player with more than "<< value << " goals recorded.";
+                cout << "There is no player with "<< value << ", or more, goals found.";
               cout << "\n\n";
 
               break;
@@ -278,7 +332,7 @@ void Operator::run() {
         }
         // 6. PlayerWithNumGoalsLessThan(i) - Complete!
         else if (option == 6) {
-          cout << "\nPrinting List of Players with a lower goal count...\n";
+          cout << "\nPrinting List of Players with the smae goal count or lower...\n";
 
           cout << "\nEnter the goal count:\n\n> ";
           cin >> value;
@@ -297,7 +351,7 @@ void Operator::run() {
                 try {
                   if (hashTable[i].getLength() > 0) {
                     for (int j = 1; j <= hashTable[i].getLength(); j++) {
-                      if (hashTable[i].getEntry(j).getGoalRecord() < value) {
+                      if (hashTable[i].getEntry(j).getGoalRecord() <= value) {
                         cout << hashTable[i].getEntry(j).getName() << ", ";
                         isFound = true;
                       }
@@ -308,7 +362,7 @@ void Operator::run() {
                 }
               }
               if(!isFound)
-                cout << "There is no player with less than "<< value << " goals recorded.";
+                cout << "There is no player with "<< value << ", or less, goals found.";
               cout << "\n\n";
 
               break;
@@ -328,7 +382,9 @@ void Operator::run() {
       }
     }
   } while(option != 7);
-  //hashTable.clear();
+
+  for (int i = 0; i < hashTableLength; i++)
+    hashTable[i].clear();
 
   value = 0;
 
