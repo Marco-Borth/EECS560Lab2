@@ -117,7 +117,7 @@ void Operator::run() {
           playerName = strParser;
           strParser = "\0";
 
-          cin >> intInput;
+          cin >> playerGoalRecord;
 
           while(1) {
             if(cin.fail()) {
@@ -137,18 +137,8 @@ void Operator::run() {
               playerName = strParser;
               strParser = "\0";
 
-              cin >> intInput;
+              cin >> playerGoalRecord;
             } else {
-
-              for (int i = 0; i < intInput.length(); i++) {
-                if(intInput.at(i) == '0' || intInput.at(i) == '1' || intInput.at(i) == '2' || intInput.at(i) == '3' || intInput.at(i) == '4'
-                || intInput.at(i) == '5' || intInput.at(i) == '6' || intInput.at(i) == '7' || intInput.at(i) == '8' || intInput.at(i) == '9')
-                  strParser = strParser + intInput.at(i);
-              }
-
-              playerGoalRecord = stoi(strParser);
-              strParser = "\0";
-
               try {
                 cout << "\nInserting " << playerName << " into the records...\n";
 
@@ -384,8 +374,12 @@ void Operator::run() {
   } while(option != 7);
 
   for (int i = 0; i < hashTableLength; i++)
-    hashTable[i].clear();
+    hashTable[i].~LinkedList();
 
+  srtInput = "\0";
+  intInput = "\0";
+  playerName = "\0";
+  playerGoalRecord = 0;
   value = 0;
 
   cout << "\nBye Bye!\n";

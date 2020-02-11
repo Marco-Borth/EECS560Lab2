@@ -14,6 +14,8 @@ using namespace std;
 
 Player::Player(){}
 
+Player::~Player(){}
+
 Player::Player(string alias, int goals) {
   name = alias;
   goalRecord = goals;

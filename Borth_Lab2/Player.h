@@ -50,6 +50,8 @@ public:
 
   Player();
 
+  ~Player();
+
   Player(string alias, int goals);
 };
 #endif
